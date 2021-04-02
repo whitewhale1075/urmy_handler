@@ -66,6 +66,10 @@ func (s *sqliteHandler) GetUrMyFriendList(phoneNo string) (*PersonSaju, error) {
 	var identifier string
 	var friendsaju PersonSaju
 	err := s.db.Get(&identifier, "SELECT loginid FROM urmyusers WHERE phoneno=$1", phoneNo)
+	if err != nil {
+		panic(err)
+	}
+
 	err = s.db.Get(&friendsaju, "SELECT * FROM urmysaju WHERE loginid=$1", identifier)
 	if err != nil {
 		fmt.Println(err)
@@ -120,14 +124,12 @@ func (s *sqliteHandler) AddUrMyUser(loginId string, password string, nickname st
 	rows, err := s.db.Query("INSERT INTO urmysaju (loginId) VALUES ($1)", loginId)
 	if err != nil {
 		panic(err)
-		return nil, err
 	}
 
 	rows, err = s.db.Query("INSERT INTO urmyusers (loginId, password, nickname, name, phoneNo, gender, birthday, createdat) VALUES ($1, $2, $3, $4, $5, $6, $7, current_timestamp)",
 		loginId, password, nickname, name, phoneNo, genderstate, birthdateinsert)
 	if err != nil {
 		panic(err)
-		return nil, err
 	}
 	defer rows.Close()
 	temp, err := time.Parse("2006-01-02 15:04:05", birthdate)
@@ -191,8 +193,17 @@ func (s *sqliteHandler) Close() {
 	s.db.Close()
 }
 
+/*
 const (
 	host     = "192.168.10.150"
+	port     = 5432
+	user     = "koreaogh"
+	password = "ogh1898"
+	dbname   = "urmydb"
+)
+*/
+const (
+	host     = "172.31.210.221"
 	port     = 5432
 	user     = "koreaogh"
 	password = "ogh1898"
@@ -203,13 +214,13 @@ func newSqliteHandler() DBHandler {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	database, err := sqlx.Open("postgres", psqlInfo)
 	if err != nil {
-		fmt.Println(err)
 		panic(err)
 	}
 
 	errPing := database.Ping
 	if errPing != nil {
-		fmt.Println(errPing)
+		panic(errPing)
 	}
+
 	return &sqliteHandler{db: database}
 }

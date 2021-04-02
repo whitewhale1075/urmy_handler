@@ -121,11 +121,6 @@ type Time_Ganji struct {
 	Jiji_Title    string
 }
 
-type Timerange struct {
-	start string
-	end   string
-}
-
 type SaJuPalJa struct {
 	YearChun  string
 	YearJi    string
@@ -215,7 +210,6 @@ func (s *SajuTable) ExtractSaju(saju *Saju) *SaJuPalJa {
 	indexTime := inTimeSpan(saju.Time)
 	t.TimeChun = s.Manse[saju.Year-s.Manse[0].WhichYear].MonthGanji[saju.Month-1].Day_Ganji[saju.Day-1].Time_Ganji[indexTime].Chungan_Title
 	t.TimeJi = s.Manse[saju.Year-s.Manse[0].WhichYear].MonthGanji[saju.Month-1].Day_Ganji[saju.Day-1].Time_Ganji[indexTime].Jiji_Title
-	fmt.Println(t)
 	return &t
 }
 
@@ -280,11 +274,8 @@ func (s *SajuTable) forwardDaeunIndex(saju *Saju, palja *SaJuPalJa) int {
 	var daeunindex int
 	tjulgy := time.Date(saju.Year, time.Month(saju.Month), s.Julgys[saju.Year-1950].MonthJulgys[saju.Month-1].DayJulgys[0].Day, 0, 0, 0, 0, time.UTC)
 	tbirth := time.Date(saju.Year, time.Month(saju.Month), saju.Day, 0, 0, 0, 0, time.UTC)
-	fmt.Println(saju)
-	fmt.Println(tjulgy)
-	fmt.Println(tbirth)
+
 	if tbirth.After(tjulgy) {
-		fmt.Println(saju.Month + 1)
 		if saju.Month+1 == 13 {
 			tjulgy = time.Date(saju.Year+1, time.Month(saju.Month-11), s.Julgys[saju.Year-1949].MonthJulgys[0].DayJulgys[0].Day, 0, 0, 0, 0, time.UTC)
 		} else {

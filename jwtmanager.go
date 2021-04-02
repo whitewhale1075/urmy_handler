@@ -57,7 +57,7 @@ func (rc *jwtredisHandler) GernerateAccessJWT(userid string) (*AccessTokenDetail
 	td.AtExpires = time.Now().Add(time.Second * 240).Unix()
 	u, err := uuid.NewV4()
 	if err != nil {
-		// TODO: Handle error.
+		return nil, err
 	}
 	td.AccessUuid = u.String()
 
@@ -70,8 +70,7 @@ func (rc *jwtredisHandler) GernerateAccessJWT(userid string) (*AccessTokenDetail
 	td.AccessToken, err = atoken.SignedString(mySigningKey)
 
 	if err != nil {
-		fmt.Errorf("Something went wrong: %s", err.Error())
-		return nil, err
+		return nil, fmt.Errorf("something went wrong: %s", err.Error())
 	}
 
 	return td, nil
@@ -95,8 +94,7 @@ func (rc *jwtredisHandler) GernerateRefreshJWT(userid string) (*RefreshTokenDeta
 	td.RefreshToken, err = rtoken.SignedString(mySigningKey)
 
 	if err != nil {
-		fmt.Errorf("Something went wrong: %s", err.Error())
-		return nil, err
+		return nil, fmt.Errorf("something went wrong: %s", err.Error())
 	}
 
 	return td, nil
@@ -198,7 +196,7 @@ func (rc *jwtredisHandler) ExtractRefreshTokenMetadata(r *http.Request) (*Refres
 func (rc *jwtredisHandler) FetchAccessAuth(authD *AccessDetails) (string, error) {
 	userid, err := rc.ac.Get(authD.AccessUuid).Result()
 	if err != nil {
-		return "", nil
+		return "", fmt.Errorf("fetch access auth : %s", err)
 	}
 	//userID, _ := strconv.ParseUint(userid, 10, 64)
 
@@ -208,7 +206,7 @@ func (rc *jwtredisHandler) FetchAccessAuth(authD *AccessDetails) (string, error)
 func (rc *jwtredisHandler) FetchRefreshAuth(authD *RefreshDetails) (string, error) {
 	userid, err := rc.rc.Get(authD.RefreshUuid).Result()
 	if err != nil {
-
+		return "", fmt.Errorf("fetch refresh auth : %s", err)
 	}
 	//userID, _ := strconv.ParseUint(userid, 10, 64)
 
@@ -273,14 +271,16 @@ func NewJWTHandler() JWTHandler {
 
 func jwtRedisHandler() JWTHandler {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "192.168.10.160:6379",
+		//Addr:     "192.168.10.160:6379",
+		Addr:     "172.31.210.238:6379",
 		Password: "qwer1234", // no password set
 		DB:       0,          // use default DB
 	})
 	ping(rdb)
 
 	rdb2 := redis.NewClient(&redis.Options{
-		Addr:     "192.168.10.161:6379",
+		//Addr:     "192.168.10.161:6379",
+		Addr:     "172.31.210.110:6379",
 		Password: "qwer1234", // no password set
 		DB:       0,          // use default DB
 	})
