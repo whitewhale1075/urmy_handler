@@ -201,6 +201,7 @@ const (
 	password = "ogh1898"
 	dbname   = "urmydb"
 )
+
 */
 const (
 	host     = "172.31.210.221"
@@ -214,12 +215,14 @@ func newSqliteHandler() DBHandler {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	database, err := sqlx.Open("postgres", psqlInfo)
 	if err != nil {
-		panic(err)
+		//panic(err)
+		fmt.Println(err)
 	}
 
 	errPing := database.Ping
 	if errPing != nil {
-		panic(errPing)
+		//panic(errPing)
+		fmt.Println(err)
 	}
 
 	return &sqliteHandler{db: database}
