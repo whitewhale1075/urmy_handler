@@ -193,7 +193,6 @@ func (s *sqliteHandler) Close() {
 	s.db.Close()
 }
 
-/*
 const (
 	host     = "192.168.10.150"
 	port     = 5432
@@ -202,7 +201,7 @@ const (
 	dbname   = "urmydb"
 )
 
-*/
+/*
 const (
 	host     = "172.31.210.221"
 	port     = 5432
@@ -210,7 +209,7 @@ const (
 	password = "ogh1898"
 	dbname   = "urmydb"
 )
-
+*/
 func newSqliteHandler() DBHandler {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	database, err := sqlx.Open("postgres", psqlInfo)
