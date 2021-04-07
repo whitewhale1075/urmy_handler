@@ -67,7 +67,7 @@ func (s *sqliteHandler) GetUrMyFriendList(phoneNo string) (*PersonSaju, error) {
 	var friendsaju PersonSaju
 	err := s.db.Get(&identifier, "SELECT loginid FROM urmyusers WHERE phoneno=$1", phoneNo)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	err = s.db.Get(&friendsaju, "SELECT * FROM urmysaju WHERE loginid=$1", identifier)
@@ -223,6 +223,8 @@ func newSqliteHandler() DBHandler {
 	if errPing != nil {
 		//panic(errPing)
 		fmt.Println(err)
+	} else {
+		fmt.Println("attached")
 	}
 
 	return &sqliteHandler{db: database}
