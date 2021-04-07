@@ -271,16 +271,16 @@ func NewJWTHandler() JWTHandler {
 
 func jwtRedisHandler() JWTHandler {
 	rdb := redis.NewClient(&redis.Options{
-		Addr: "192.168.10.160:6379",
-		//Addr:     "172.31.210.238:6379",
+		//Addr: "192.168.10.160:6379",
+		Addr:     "172.31.210.238:6379",
 		Password: "qwer1234", // no password set
 		DB:       0,          // use default DB
 	})
 	ping(rdb)
 
 	rdb2 := redis.NewClient(&redis.Options{
-		Addr: "192.168.10.161:6379",
-		//Addr:     "172.31.210.110:6379",
+		//Addr: "192.168.10.161:6379",
+		Addr:     "172.31.210.110:6379",
 		Password: "qwer1234", // no password set
 		DB:       0,          // use default DB
 	})
