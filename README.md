@@ -3,7 +3,8 @@
 > ### Golang
 
 ## Description
-> These packages are for the urmyserver. The server will calculate saju algorithm with birthdate data and extract match rate.
+> These packages are for the urmyserver.   
+> The server will calculate saju algorithm with birthdate data and extract match rate.   
 > It is not developed fully yet. Still have lots of work to do
 
 ## Using
